@@ -6,13 +6,12 @@
 
 WITH q2 AS (
     SELECT
-      vendor_name,
-      count(ditinct id) customer_count,
-      count(ditinct id) total_gmv
-      from vendors
+      vendors.vendor_name vendor_name,
+      count(distinct orders.customer_id) customer_count,
+      sum(orders.gmv_local) total_gmv
+      from orders left join vendors on orders.vendor_id = vendors.id
       group by 1
-      where country_name = "Taiwan"
   
 )
 
-select country_name, customer_count, total_gmv from q2
+select vendor_name,customer_count,total_gmv from q2
